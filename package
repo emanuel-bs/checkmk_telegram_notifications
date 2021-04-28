@@ -1,7 +1,7 @@
 {
-    'author': u'',
-    'description': u'',
-    'download_url': '',
+    'author': u'Stefan Gehn <stefan+cmk@srcbox.net>',
+    'description': u'Telegram notification based on asciimail notification from check_mk',
+    'download_url': 'https://git.srcbox.net/stefan/checkmk_telegram_notifications',
     'files': {
         'agent_based': [],
         'agents': [],
@@ -9,13 +9,13 @@
         'checks': [],
         'doc': [],
         'inventory': [],
-        'notifications': [],
+        'notifications': ['telegram'],
         'pnp-templates': [],
-        'web': []
+        'web': ['plugins/wato/telegram.py']
     },
-    'name': '',
-    'title': u'',
-    'version': '0.1',
+    'name': 'telegram_notifications',
+    'title': u'Telegram notifications',
+    'version': '1.0.0a',
     'version.min_required': '2.0.0',
     'version.packaged': '2.0.0'
 }
