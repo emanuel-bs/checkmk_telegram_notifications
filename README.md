@@ -1,32 +1,77 @@
-# Checkmk extension for ...
+<!--
+# SPDX-FileCopyrightText: 2021 Stefan Gehn <stefan+cmk@srcbox.net>
+#
+# SPDX-License-Identifier: CC0-1.0
+-->
 
-![build](https://github.com/jiuka/checkmk_phion/workflows/build/badge.svg)
-![flake8](https://github.com/jiuka/checkmk_phion/workflows/Lint/badge.svg)
-![pytest](https://github.com/jiuka/checkmk_phion/workflows/pytest/badge.svg)
+# Forked from PR <https://git.srcbox.net/stefan/checkmk_telegram_notifications/pulls/4>
 
-## Description
+Changes:
+- Escape characters ``-`` => ``\-`` <https://core.telegram.org/bots/api#markdownv2-style>
 
-This is a template to develop Checkmk Extensions
+# Checkmk Telegram Notifications
 
-## Development
+This is a Checkmk plugin to send notifications via Telegram.
 
-For the best development experience use [VSCode](https://code.visualstudio.com/) with the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension. This maps your workspace into a checkmk docker container giving you access to the python environment and libraries the installed extension has.
+The initial version of this plugin was posted in 2016 on my blog:
+[Monitoring Notifications via Telegram](https://www.srcbox.net/posts/monitoring-notifications-via-telegram/)
 
-## Directories
 
-The following directories in this repo are getting mapped into the Checkmk site.
+## Download
 
-* `agents`, `checkman`, `checks`, `doc`, `inventory`, `notifications`, `pnp-templates`, `web` are mapped into `local/share/check_mk/`
-* `agent_based` is mapped to `local/lib/check_mk/base/plugins/agent_based`
-* `nagios_plugins` is mapped to `local/lib/nagios/plugins`
+The latest version can always be found under
+[Releases](https://git.srcbox.net/stefan/checkmk_telegram_notifications/releases).
 
-## Continuous integration
-### Local
+The plugin is also available at
+[Checkmk Exchange](https://exchange.checkmk.com/p/telegram-notifications) but
+it may take some time to see new releases.
 
-To build the package hit `Crtl`+`Shift`+`B` to execute the build task in VSCode.
 
-`pytest` can be executed from the terminal or the test ui.
+## Setup
 
-### Github Workflow
+Sending messages via a Telegram bot requires two pieces of information:
+1. The `token`  of a Telegram Bot to send messages with
+2. The `chat id` for any user to send notifications to
 
-The provided Github Workflows run `pytest` and `flake8` in the same checkmk docker conatiner as vscode.
+
+## Telegram Bot
+
+The instructions for talking to
+[BotFather](https://core.telegram.org/bots#6-botfather) (the Telegram bot used
+to create a new bot) should be straightforward to follow. The resulting `token`
+will be needed for all following steps.
+
+To send messages to a Telegram user, one needs to know the internal `chat id`
+for the chat/conversation between the user and the bot.
+
+To find out the `chat id`, open a private conversation with the bot and send
+at least one message. Afterwards query the list of incoming messages via the
+`getUpdates` function of the Telegram Bot API by fetching
+`https://api.telegram.org/botTOKEN/getUpdates` (replacing `TOKEN` with the
+actual bot token).
+
+For example using `curl` and `jq` (opening the URL in a web browser will work
+as well):
+```bash
+curl --silent "https://api.telegram.org/bot${TOKEN}/getUpdates" | jq '.result[].message.chat'
+```
+
+Output:
+```json
+"chat": {
+    "id": 144553322,
+    "first_name": "Stefan",
+    "type": "private"
+}
+```
+
+In the above example the `chat id` would be `144553322`.
+
+
+## Notification
+
+
+With both the bot `token` as well as the `chat id` being known one can now
+create a notification rule in Checkmk.
+
+![Checkmk Notification Rule](images/notification_rule.png)
