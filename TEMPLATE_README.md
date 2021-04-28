@@ -1,8 +1,8 @@
 # Checkmk extension for ...
 
-![build](https://github.com/jiuka/checkmk_phion/workflows/build/badge.svg)
-![flake8](https://github.com/jiuka/checkmk_phion/workflows/Lint/badge.svg)
-![pytest](https://github.com/jiuka/checkmk_phion/workflows/pytest/badge.svg)
+![build](https://github.com/emanuel-bs/checkmk_telegram_notifications/workflows/build/badge.svg)
+![flake8](https://github.com/emanuel-bs/checkmk_telegram_notifications/workflows/Lint/badge.svg)
+![pytest](https://github.com/emanuel-bs/checkmk_telegram_notifications/workflows/pytest/badge.svg)
 
 ## Description
 
